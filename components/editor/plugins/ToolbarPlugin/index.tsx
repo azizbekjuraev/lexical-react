@@ -48,6 +48,7 @@ import {
 } from "@lexical/utils";
 import {
   $createParagraphNode,
+  $createTextNode,
   $getNodeByKey,
   $getRoot,
   $getSelection,
@@ -97,6 +98,7 @@ import InsertLayoutDialog from "../LayoutPlugin/InsertLayoutDialog";
 import { INSERT_PAGE_BREAK } from "../PageBreakPlugin";
 import { InsertPollDialog } from "../PollPlugin";
 import { InsertTableDialog } from "../TablePlugin";
+import EmojiMartPlugin from "../EmojiMartPlugin";
 
 const blockTypeToBlockName = {
   bullet: "Bulleted List",
@@ -835,6 +837,21 @@ export default function ToolbarPlugin({
     activeEditor.dispatchCommand(INSERT_IMAGE_COMMAND, payload);
   };
 
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  const handleClose = () => setAnchorEl(null);
+
+    const handleEmojiSelect = (emoji: any) => {
+        editor.update(() => {
+            const selection = $getSelection();
+            if ($isRangeSelection(selection)) {
+                selection.insertNodes([$createTextNode(emoji.native)]);
+            }
+        });
+        handleClose();
+    };
+
+
   return (
     <div className="toolbar">
       <button
@@ -1231,6 +1248,15 @@ export default function ToolbarPlugin({
                 <span className="text">{embedConfig.contentName}</span>
               </DropDownItem>
             ))}
+          </DropDown>
+          <DropDown
+            disabled={!isEditable}
+            buttonClassName="toolbar-item spaced"
+            buttonLabel="Emoji"
+            buttonAriaLabel="Insert specialized editor node"
+            buttonIconClassName="icon plus"
+          >
+            <EmojiMartPlugin onEmojiSelect={handleEmojiSelect}/>           
           </DropDown>
         </>
       )}

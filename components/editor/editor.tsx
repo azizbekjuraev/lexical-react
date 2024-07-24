@@ -64,7 +64,7 @@ import TwitterPlugin from "./plugins/TwitterPlugin";
 import YouTubePlugin from "./plugins/YouTubePlugin";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
-import LocalStoragePlugin from "./plugins/LocalStoragePlugin";
+import EmojiMartPlugin from "./plugins/EmojiMartPlugin";
 
 export default function Editor(): JSX.Element {
   const { historyState } = useSharedHistoryContext();

@@ -422,6 +422,10 @@ i.horizontal-rule {
   background-image: url(/icons/plus.svg);
 }
 
+.icon.emoji {
+  background-image: url(/icons/emoji.svg);
+}
+
 .icon.caret-right {
   background-image: url(/icons/caret-right-fill.svg);
 }
