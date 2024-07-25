@@ -65,6 +65,8 @@ import YouTubePlugin from "./plugins/YouTubePlugin";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
 import EmojiMartPlugin from "./plugins/EmojiMartPlugin";
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { $getRoot, $getSelection, EditorState } from "lexical";
 
 export default function Editor(): JSX.Element {
   const { historyState } = useSharedHistoryContext();
@@ -115,6 +117,13 @@ export default function Editor(): JSX.Element {
       window.removeEventListener("resize", updateViewPortWidth);
     };
   }, [isSmallWidthViewport]);
+
+  const handleChange = (editorState: EditorState) => {
+    editorState.read(() => {
+        const root = $getRoot();
+        const selection = $getSelection();
+    });
+  }
 
   return (
     <>
@@ -178,6 +187,7 @@ export default function Editor(): JSX.Element {
             <CollapsiblePlugin />
             <PageBreakPlugin />
             <LayoutPlugin />
+            <OnChangePlugin onChange={handleChange}/>
             {floatingAnchorElem && !isSmallWidthViewport && (
               <>
                 <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
