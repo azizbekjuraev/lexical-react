@@ -6,6 +6,8 @@
  *
  */
 
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { $generateHtmlFromNodes } from '@lexical/html';
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { CharacterLimitPlugin } from "@lexical/react/LexicalCharacterLimitPlugin";
 import { CheckListPlugin } from "@lexical/react/LexicalCheckListPlugin";
@@ -59,16 +61,15 @@ import TableCellActionMenuPlugin from "./plugins/TableActionMenuPlugin";
 import TableCellResizer from "./plugins/TableCellResizer";
 import TableOfContentsPlugin from "./plugins/TableOfContentsPlugin";
 import ToolbarPlugin from "./plugins/ToolbarPlugin";
-// import TreeViewPlugin from "./plugins/TreeViewPlugin";
 import TwitterPlugin from "./plugins/TwitterPlugin";
 import YouTubePlugin from "./plugins/YouTubePlugin";
 import ContentEditable from "./ui/ContentEditable";
 import Placeholder from "./ui/Placeholder";
-import EmojiMartPlugin from "./plugins/EmojiMartPlugin";
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { $getRoot, $getSelection, EditorState } from "lexical";
 
 export default function Editor(): JSX.Element {
+  const [editor] = useLexicalComposerContext();
   const { historyState } = useSharedHistoryContext();
   const {
     settings: {
@@ -123,7 +124,14 @@ export default function Editor(): JSX.Element {
         const root = $getRoot();
         const selection = $getSelection();
     });
-  }
+  };
+
+  const convertToHtml = () => {
+    editor.update(() => {
+      const htmlString = $generateHtmlFromNodes(editor, null);
+      // console.log(htmlString);
+    });
+  };
 
   return (
     <>
@@ -224,6 +232,7 @@ export default function Editor(): JSX.Element {
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         {shouldUseLexicalContextMenu && <ContextMenuPlugin />}
         <ActionsPlugin isRichText={isRichText} />
+        <button onClick={convertToHtml}>Convert to HTML</button>
       </div>
     </>
   );
