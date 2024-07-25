@@ -1254,7 +1254,7 @@ export default function ToolbarPlugin({
             buttonClassName="toolbar-item spaced"
             buttonLabel="Emoji"
             buttonAriaLabel="Insert specialized editor node"
-            buttonIconClassName="icon plus"
+            buttonIconClassName="icon emoji"
           >
             <EmojiMartPlugin onEmojiSelect={handleEmojiSelect}/>           
           </DropDown>
